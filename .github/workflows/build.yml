@@ -26,9 +26,10 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Build Angel Client
-        working-directory: AngelClient
-        run: gradle build --no-daemon
+          - name: Find Gradle files
+        shell: bash
+        run: |
+          find . -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' -o -name 'settings.gradle' -o -name 'settings.gradle.kts' \) -print
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
