@@ -317,6 +317,7 @@ public final class AngelScreen extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         renderBackground(context, mouseX, mouseY, delta);
+         super.render(context, mouseX, mouseY, delta);
         int left = Math.max(8, (width - 560) / 2);
         int top = Math.max(8, (height - 330) / 2);
         context.fill(left, top, left + 560, top + 330, background);
@@ -332,7 +333,7 @@ public final class AngelScreen extends Screen {
             context.drawText(textRenderer, currentTrack, left + 170, top + 146, 0xFFDDDDDD, false);
             context.drawText(textRenderer, "Sterowanie działa po dodaniu autoryzacji Spotify API.", left + 170, top + 170, 0xFFAAAAAA, false);
         }
-        super.render(context, mouseX, mouseY, delta);
+       
     }
 
     @Override
