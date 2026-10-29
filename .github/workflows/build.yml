@@ -36,5 +36,5 @@ jobs:
           name: AngelClient-JAR
           path: AngelClient/build/libs/*.jar
           if-no-files-found: error
-      - name: Build Angel Client
+       - name: Build Angel Client
         run: find . -name build.gradle -o -name build.gradle.kts
