@@ -60,6 +60,7 @@ jobs:
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
+        gradle <task> --daemon
         with:
           name: AngelClient-JAR
           path: '**/build/libs/*.jar'
