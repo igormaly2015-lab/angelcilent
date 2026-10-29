@@ -60,6 +60,5 @@ jobs:
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
-          name: AngelClient-JAR
           path: '**/build/libs/*.jar'
           if-no-files-found: error
