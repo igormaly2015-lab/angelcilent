@@ -313,11 +313,65 @@ public final class AngelScreen extends Screen {
             statusMessage = "Nie udało się skopiować konfiguracji";
         }
     }
+@Override
+public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+    renderBackground(context, mouseX, mouseY, delta);
 
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        renderBackground(context, mouseX, mouseY, delta);
-         super.render(context, mouseX, mouseY, delta);
+    int panelWidth = Math.min(560, width - 20);
+    int panelHeight = Math.min(330, height - 20);
+    int left = (width - panelWidth) / 2;
+    int top = (height - panelHeight) / 2;
+
+    // Tło głównego panelu
+    context.fill(
+        left, top,
+        left + panelWidth, top + panelHeight,
+        0xFF11111B
+    );
+
+    // Lewy pasek menu
+    context.fill(
+        left, top,
+        left + 155, top + panelHeight,
+        0xFF242438
+    );
+
+    // Nagłówek
+    context.fill(
+        left, top,
+        left + panelWidth, top + 32,
+        0xFF30304A
+    );
+
+    context.drawText(
+        textRenderer,
+        "ANGEL CLIENT",
+        left + 12, top + 11,
+        0xFFFFD76A,
+        false
+    );
+
+    context.drawText(
+        textRenderer,
+        tabs.get(selectedTab),
+        left + 170, top + 12,
+        0xFFFFFFFF,
+        false
+    );
+
+    context.drawText(
+        textRenderer,
+        statusMessage,
+        left + 170, top + panelHeight - 18,
+        0xFFFFD76A,
+        false
+    );
+
+    // Przyciski muszą być rysowane na wierzchu panelu
+    super.render(context, mouseX, mouseY, delta);
+}
+
+     
         int left = Math.max(8, (width - 560) / 2);
         int top = Math.max(8, (height - 330) / 2);
         context.fill(left, top, left + 560, top + 330, background);
