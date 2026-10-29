@@ -55,5 +55,3 @@ jobs:
           PROJECT_DIR=$(dirname "$BUILD_FILE")
           echo "Znaleziono projekt: $PROJECT_DIR"
           gradle -p "$PROJECT_DIR" build --no-daemon
-      - name: Upload JAR
-          if-no-files-found: error
