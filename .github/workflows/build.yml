@@ -12,11 +12,9 @@ permissions:
 
 jobs:
   build:
-    name: Build Angel Client
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Set up Java 21
@@ -28,30 +26,12 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Find Gradle files
-        shell: bash
-        run: |
-          echo "Searching for Gradle project files..."
-          find . -type f \( \
-            -name 'build.gradle' -o \
-            -name 'build.gradle.kts' -o \
-            -name 'settings.gradle' -o \
-            -name 'settings.gradle.kts' \
-          \) -print
-
       - name: Build Angel Client
-        shell: bash
-        run: |
-          BUILD_FILE=$(find . -type f \( \
-            -name 'build.gradle' -o \
-            -name 'build.gradle.kts' \
-          \) -not -path '*/build/*' -print -quit)
+        run: gradle -p AngelClient-Jump-Circle-Logo/AngelClient build --no-daemon
 
-          if [ -z "$BUILD_FILE" ]; then
-            echo "ERROR: Nie znaleziono pliku build.gradle."
-            echo "Sprawdź, czy pliki projektu zostały przesłane do repozytorium."
-            exit 1
-          fi
-          PROJECT_DIR=$(dirname "$BUILD_FILE")
-          echo "Znaleziono projekt: $PROJECT_DIR"
-          gradle -p "$PROJECT_DIR" build --no-daemon
+      - name: Upload JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: AngelClient-JAR
+          path: AngelClient-Jump-Circle-Logo/AngelClient/build/libs/*.jar
+          if-no-files-found: error
