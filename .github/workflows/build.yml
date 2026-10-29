@@ -12,13 +12,15 @@ permissions:
 
 jobs:
   build:
+    name: Build Angel Client
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Java 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '21'
@@ -26,24 +28,39 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-          - name: Find Gradle files
+      - name: Find Gradle files
         shell: bash
         run: |
-          find . -type f \( -name 'build.gradle' -o -name 'build.gradle.kts' -o -name 'settings.gradle' -o -name 'settings.gradle.kts' \) -print
+          echo "Searching for Gradle project files..."
+          find . -type f \( \
+            -name 'build.gradle' -o \
+            -name 'build.gradle.kts' -o \
+            -name 'settings.gradle' -o \
+            -name 'settings.gradle.kts' \
+          \) -print
+
+      - name: Build Angel Client
+        shell: bash
+        run: |
+          BUILD_FILE=$(find . -type f \( \
+            -name 'build.gradle' -o \
+            -name 'build.gradle.kts' \
+          \) -not -path '*/build/*' -print -quit)
+
+          if [ -z "$BUILD_FILE" ]; then
+            echo "ERROR: Nie znaleziono pliku build.gradle."
+            echo "Sprawdź, czy pliki projektu zostały przesłane do repozytorium."
+            exit 1
+          fi
+
+          PROJECT_DIR=$(dirname "$BUILD_FILE")
+          echo "Znaleziono projekt: $PROJECT_DIR"
+
+          gradle -p "$PROJECT_DIR" build --no-daemon
 
       - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: AngelClient-JAR
-          path: AngelClient/build/libs/*.jar
+          path: '**/build/libs/*.jar'
           if-no-files-found: error
-      - name: Build Angel Client
-        working-directory: AngelClient
-        run: gradle build --no-daemon
-
-      - name: Build Angel Client
-        shell: bash
-        run: |
-          PROJECT_DIR=$(dirname "$(find . -type f -name build.gradle -o -name build.gradle.kts | head -n 1)")
-          echo "Folder projektu: $PROJECT_DIR"
-          gradle -p "$PROJECT_DIR" build --no-daemon
