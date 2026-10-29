@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "angelclient",
+  "version": "${version}",
+  "name": "Angel Client",
+  "description": "A black-and-white client UI with visual and cosmetic options.",
+  "authors": [
+    "Angel Client"
+  ],
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.angelclient.AngelClient"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.11",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "icon": "assets/angelclient/icon.png"
+}

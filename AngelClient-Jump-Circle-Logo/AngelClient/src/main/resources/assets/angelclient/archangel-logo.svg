@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+<defs>
+ <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff2a6"/><stop offset=".45" stop-color="#e8bd48"/><stop offset="1" stop-color="#9e6b12"/></linearGradient>
+ <linearGradient id="silver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".5" stop-color="#cbd4df"/><stop offset="1" stop-color="#737f90"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="1024" height="1024" rx="130" fill="#080b12"/>
+<circle cx="512" cy="265" r="146" fill="none" stroke="url(#gold)" stroke-width="18" filter="url(#glow)"/>
+<!-- wings -->
+<path d="M448 390 C350 280 230 205 126 220 C188 263 211 309 218 354 C166 331 118 332 82 351 C180 395 239 463 283 544 C328 499 383 445 448 430Z" fill="url(#silver)" stroke="#fff" stroke-width="7" stroke-linejoin="round"/>
+<path d="M576 390 C674 280 794 205 898 220 C836 263 813 309 806 354 C858 331 906 332 942 351 C844 395 785 463 741 544 C696 499 641 445 576 430Z" fill="url(#silver)" stroke="#fff" stroke-width="7" stroke-linejoin="round"/>
+<g fill="#101722" stroke="#dfe7f1" stroke-width="5">
+ <path d="M422 394 L462 344 L512 370 L562 344 L602 394 L578 512 L546 579 L478 579 L446 512Z"/>
+ <path d="M452 405 L512 432 L572 405 L555 503 L512 539 L469 503Z" fill="#d4a72f" stroke="#fff0a0"/>
+ <path d="M480 448 L512 464 L544 448 L534 493 L512 512 L490 493Z" fill="#111722" stroke="#fff"/>
+</g>
+<!-- arms -->
+<path d="M444 421 L382 487 L328 458" fill="none" stroke="url(#silver)" stroke-width="32" stroke-linecap="round"/>
+<path d="M580 421 L647 474 L697 415" fill="none" stroke="url(#silver)" stroke-width="32" stroke-linecap="round"/>
+<!-- sword in right hand -->
+<g transform="rotate(20 710 385)">
+ <path d="M710 180 L740 365 L710 400 L680 365Z" fill="url(#silver)" stroke="#fff" stroke-width="6"/>
+ <path d="M681 355 L739 355 L730 376 L690 376Z" fill="url(#gold)" stroke="#fff0a0" stroke-width="5"/>
+ <path d="M710 375 L710 444" stroke="url(#gold)" stroke-width="15" stroke-linecap="round"/>
+ <circle cx="710" cy="450" r="12" fill="url(#gold)"/>
+</g>
+<!-- mace in left hand -->
+<g transform="rotate(-24 300 360)">
+ <path d="M300 372 L300 510" stroke="url(#gold)" stroke-width="18" stroke-linecap="round"/>
+ <path d="M270 350 L330 350 L330 390 L270 390Z" fill="url(#gold)" stroke="#fff0a0" stroke-width="5"/>
+ <path d="M300 300 L315 326 L343 330 L323 351 L328 379 L300 365 L272 379 L277 351 L257 330 L285 326Z" fill="url(#gold)" stroke="#fff0a0" stroke-width="6"/>
+</g>
+<!-- lower robe and badge -->
+<path d="M455 562 L512 595 L569 562 L620 733 L512 805 L404 733Z" fill="url(#silver)" stroke="#fff" stroke-width="7" stroke-linejoin="round"/>
+<path d="M512 596 L544 701 L512 767 L480 701Z" fill="#151b25" stroke="url(#gold)" stroke-width="7"/>
+<path d="M512 619 L530 650 L565 655 L539 680 L545 715 L512 698 L479 715 L485 680 L459 655 L494 650Z" fill="url(#gold)"/>
+<text x="512" y="886" font-family="Arial, Helvetica, sans-serif" font-size="62" font-weight="900" letter-spacing="9" text-anchor="middle" fill="#ffffff">ANGEL</text>
+<text x="512" y="941" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" letter-spacing="15" text-anchor="middle" fill="url(#gold)">CLIENT</text>
+</svg>
