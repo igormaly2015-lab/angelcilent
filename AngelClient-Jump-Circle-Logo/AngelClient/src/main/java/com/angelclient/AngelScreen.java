@@ -397,13 +397,85 @@ public final class AngelScreen extends Screen {
         init();
     }
 
-    @Override
-    public void render(
-        DrawContext context,
-        int mouseX,
-        int mouseY,
-        float delta
-    ) {
+   @Override
+public void render(
+    DrawContext context,
+    int mouseX,
+    int mouseY,
+    float delta
+) {
+    renderBackground(context, mouseX, mouseY, delta);
+
+    int left = Math.max(8, (width - PANEL_WIDTH) / 2);
+    int top = Math.max(8, (height - PANEL_HEIGHT) / 2);
+
+    // Tlo calego menu
+    context.fill(
+        left, top,
+        left + PANEL_WIDTH, top + PANEL_HEIGHT,
+        0xFF171725
+    );
+
+    // Lewy panel
+    context.fill(
+        left, top,
+        left + 155, top + PANEL_HEIGHT,
+        0xFF25253A
+    );
+
+    // Pasek tytulowy
+    context.fill(
+        left, top,
+        left + PANEL_WIDTH, top + 34,
+        0xFF30304A
+    );
+
+    // Najpierw przyciski
+    super.render(context, mouseX, mouseY, delta);
+
+    // Potem teksty, zeby byly na wierzchu
+    context.drawText(
+        textRenderer,
+        "ANGEL CLIENT",
+        left + 12,
+        top + 12,
+        0xFFFFD76A,
+        false
+    );
+
+    String heading = jumpCircleSettingsOpen
+        ? "JUMP CIRCLE SETTINGS"
+        : TABS[selectedTab];
+
+    context.drawText(
+        textRenderer,
+        heading,
+        left + 170,
+        top + 15,
+        0xFFFFFFFF,
+        false
+    );
+
+    context.drawText(
+        textRenderer,
+        status,
+        left + 170,
+        top + 285,
+        0xFFFFD76A,
+        false
+    );
+
+    if (jumpCircleSettingsOpen) {
+        context.drawText(
+            textRenderer,
+            "Kolor, rozmiar, animacja i logo",
+            left + 170,
+            top + 230,
+            0xFFDDDDDD,
+            false
+        );
+    }
+}
         renderBackground(context, mouseX, mouseY, delta);
 
         int left = Math.max(8, (width - PANEL_WIDTH) / 2);
