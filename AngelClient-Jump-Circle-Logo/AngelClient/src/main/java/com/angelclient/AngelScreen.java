@@ -1,4 +1,3 @@
-
 package com.angelclient;
 
 import net.minecraft.client.MinecraftClient;
@@ -27,14 +26,14 @@ public final class AngelScreen extends Screen {
     };
 
     private static final String[] CHEATS = {
-        "Kill Aura (prototyp UI)",
-        "FakeLag (prototyp UI)",
-        "Reach (prototyp UI)",
-        "Velocity (prototyp UI)",
-        "Auto Clicker (prototyp UI)",
-        "Aim Assist (prototyp UI)",
-        "Trigger Bot (prototyp UI)",
-        "Auto Trap (prototyp UI)"
+        "Kill Aura (UI)",
+        "FakeLag (UI)",
+        "Reach (UI)",
+        "Velocity (UI)",
+        "Auto Clicker (UI)",
+        "Aim Assist (UI)",
+        "Trigger Bot (UI)",
+        "Auto Trap (UI)"
     };
 
     private static final String[] VISUALS = {
@@ -42,10 +41,10 @@ public final class AngelScreen extends Screen {
         "Angel Aura", "Golden Wings", "Heaven Particles",
         "Halo Visual", "Enchanted Sword", "Target Highlight",
         "China Hat", "Glass Vapor", "Tracers", "Nametags",
-        "Player Glow", "Motion Blur (preview)", "Hit Color",
+        "Player Glow", "Motion Blur", "Hit Color",
         "Damage Tint", "Keystrokes HUD", "CPS Counter",
-        "Armor HUD", "Potion HUD", "Crosshair Customizer",
-        "Low Fire", "Item Physics (preview)"
+        "Armor HUD", "Potion HUD", "Custom Crosshair",
+        "Low Fire", "Item Physics"
     };
 
     private final Map<String, Boolean> toggles = new LinkedHashMap<>();
@@ -54,6 +53,7 @@ public final class AngelScreen extends Screen {
     private int selectedTab = 0;
     private int page = 0;
     private int backgroundColor = 0xFF171725;
+
     private String status = "Angel Client gotowy";
     private boolean jumpCircleSettingsOpen = false;
 
@@ -115,6 +115,7 @@ public final class AngelScreen extends Screen {
             }
 
             status = "Konfiguracja zapisana";
+
         } catch (IOException e) {
             status = "Blad zapisu konfiguracji";
         }
@@ -160,8 +161,9 @@ public final class AngelScreen extends Screen {
                     )
                 );
             }
+
         } catch (IOException | NumberFormatException e) {
-            status = "Nie udalo sie wczytac konfiguracji";
+            status = "Blad konfiguracji";
         }
     }
 
@@ -176,9 +178,16 @@ public final class AngelScreen extends Screen {
             final int tab = i;
 
             addDrawableChild(ButtonWidget.builder(
-                Text.literal((selectedTab == i ? "> " : "") + TABS[i]),
+                Text.literal(
+                    (selectedTab == i ? "> " : "") + TABS[i]
+                ),
                 button -> selectTab(tab)
-            ).dimensions(left + 10, top + 42 + i * 36, 140, 29).build());
+            ).dimensions(
+                left + 10,
+                top + 42 + i * 36,
+                140,
+                29
+            ).build());
         }
 
         int x = left + 170;
@@ -188,15 +197,20 @@ public final class AngelScreen extends Screen {
             addJumpCircleSettings(x, y);
         } else {
             switch (selectedTab) {
+
                 case 0 -> {
                     addButton("Otworz CHEATS", x, y,
                         () -> selectTab(1));
+
                     addButton("Otworz VISUALS", x + 175, y,
                         () -> selectTab(2));
+
                     addButton("Otworz COSMETICS", x, y + 42,
                         () -> selectTab(3));
+
                     addButton("Otworz CUSTOM GUI", x + 175, y + 42,
                         () -> selectTab(4));
+
                     addButton("Otworz CONFIG", x, y + 84,
                         () -> selectTab(5));
                 }
@@ -213,12 +227,14 @@ public final class AngelScreen extends Screen {
 
                 case 4 -> addButton(
                     "Zmien kolor tla",
-                    x, y,
+                    x,
+                    y,
                     () -> {
                         backgroundColor =
                             backgroundColor == 0xFF171725
                                 ? 0xFFEEEEEE
                                 : 0xFF171725;
+
                         saveConfig();
                         init();
                     }
@@ -238,6 +254,7 @@ public final class AngelScreen extends Screen {
                         toggles.replaceAll((key, value) -> false);
 
                         backgroundColor = 0xFF171725;
+
                         settings.put("Jump Circle.Color", "Gold");
                         settings.put("Jump Circle.Size", "1.0");
                         settings.put("Jump Circle.Animation", "Pulse");
@@ -252,7 +269,8 @@ public final class AngelScreen extends Screen {
 
         addButton(
             jumpCircleSettingsOpen ? "Powrot" : "Zamknij",
-            left + 445, top + 305,
+            left + 445,
+            top + 305,
             () -> {
                 if (jumpCircleSettingsOpen) {
                     jumpCircleSettingsOpen = false;
@@ -266,6 +284,7 @@ public final class AngelScreen extends Screen {
 
     private void addTogglePage(String[] items, int x, int y) {
         int pageSize = 8;
+
         int pageCount = Math.max(
             1,
             (items.length + pageSize - 1) / pageSize
@@ -278,37 +297,34 @@ public final class AngelScreen extends Screen {
 
         for (int i = start; i < end; i++) {
             String name = items[i];
+
             int col = (i - start) % 2;
             int row = (i - start) / 2;
 
             addButton(
-                name + (toggles.getOrDefault(name, false)
-                    ? " : ON" : " : OFF"),
+                name + (
+                    toggles.getOrDefault(name, false)
+                        ? " : ON"
+                        : " : OFF"
+                ),
                 x + col * 175,
                 y + row * 36,
                 () -> {
-                    if ("Jump Circle".equals(name)) {
-                        toggles.put(
-                            name,
-                            !toggles.getOrDefault(name, false)
-                        );
+                    toggles.put(
+                        name,
+                        !toggles.getOrDefault(name, false)
+                    );
 
+                    if ("Jump Circle".equals(name)) {
                         jumpCircleSettingsOpen = true;
                         status = "Ustawienia Jump Circle";
-                        saveConfig();
-                        init();
                     } else {
-                        toggles.put(
-                            name,
-                            !toggles.getOrDefault(name, false)
-                        );
-
                         status = name + " - "
                             + (toggles.get(name) ? "ON" : "OFF");
-
-                        saveConfig();
-                        init();
                     }
+
+                    saveConfig();
+                    init();
                 }
             );
         }
@@ -327,47 +343,72 @@ public final class AngelScreen extends Screen {
     }
 
     private void addJumpCircleSettings(int x, int y) {
-        addButton("Kolor: " + settings.get("Jump Circle.Color"),
-            x, y, () -> {
+        addButton(
+            "Kolor: " + settings.get("Jump Circle.Color"),
+            x,
+            y,
+            () -> {
                 String current = settings.get("Jump Circle.Color");
+
                 settings.put(
                     "Jump Circle.Color",
                     "Gold".equals(current) ? "Blue"
-                        : "Blue".equals(current) ? "White" : "Gold"
+                        : "Blue".equals(current) ? "White"
+                        : "Gold"
                 );
+
                 saveConfig();
                 init();
-            });
+            }
+        );
 
-        addButton("Rozmiar: " + settings.get("Jump Circle.Size"),
-            x, y + 40, () -> {
+        addButton(
+            "Rozmiar: " + settings.get("Jump Circle.Size"),
+            x,
+            y + 40,
+            () -> {
                 String current = settings.get("Jump Circle.Size");
+
                 settings.put(
                     "Jump Circle.Size",
                     "1.0".equals(current) ? "1.5"
-                        : "1.5".equals(current) ? "2.0" : "1.0"
+                        : "1.5".equals(current) ? "2.0"
+                        : "1.0"
                 );
+
                 saveConfig();
                 init();
-            });
+            }
+        );
 
-        addButton("Animacja: " + settings.get("Jump Circle.Animation"),
-            x, y + 80, () -> {
+        addButton(
+            "Animacja: " + settings.get("Jump Circle.Animation"),
+            x,
+            y + 80,
+            () -> {
                 String current = settings.get("Jump Circle.Animation");
+
                 settings.put(
                     "Jump Circle.Animation",
                     "Pulse".equals(current) ? "Rotate"
-                        : "Rotate".equals(current) ? "None" : "Pulse"
+                        : "Rotate".equals(current) ? "None"
+                        : "Pulse"
                 );
+
                 saveConfig();
                 init();
-            });
+            }
+        );
 
-        addButton("Logo: " + settings.get("Jump Circle.Logo"),
-            x, y + 120, () -> {
+        addButton(
+            "Logo: " + settings.get("Jump Circle.Logo"),
+            x,
+            y + 120,
+            () -> {
                 toggleSetting("Jump Circle.Logo", "ON", "OFF");
                 init();
-            });
+            }
+        );
     }
 
     private void toggleSetting(String key, String a, String b) {
@@ -375,6 +416,7 @@ public final class AngelScreen extends Screen {
             key,
             settings.getOrDefault(key, a).equals(a) ? b : a
         );
+
         saveConfig();
     }
 
@@ -397,85 +439,13 @@ public final class AngelScreen extends Screen {
         init();
     }
 
-   @Override
-public void render(
-    DrawContext context,
-    int mouseX,
-    int mouseY,
-    float delta
-) {
-    renderBackground(context, mouseX, mouseY, delta);
-
-    int left = Math.max(8, (width - PANEL_WIDTH) / 2);
-    int top = Math.max(8, (height - PANEL_HEIGHT) / 2);
-
-    // Tlo calego menu
-    context.fill(
-        left, top,
-        left + PANEL_WIDTH, top + PANEL_HEIGHT,
-        0xFF171725
-    );
-
-    // Lewy panel
-    context.fill(
-        left, top,
-        left + 155, top + PANEL_HEIGHT,
-        0xFF25253A
-    );
-
-    // Pasek tytulowy
-    context.fill(
-        left, top,
-        left + PANEL_WIDTH, top + 34,
-        0xFF30304A
-    );
-
-    // Najpierw przyciski
-    super.render(context, mouseX, mouseY, delta);
-
-    // Potem teksty, zeby byly na wierzchu
-    context.drawText(
-        textRenderer,
-        "ANGEL CLIENT",
-        left + 12,
-        top + 12,
-        0xFFFFD76A,
-        false
-    );
-
-    String heading = jumpCircleSettingsOpen
-        ? "JUMP CIRCLE SETTINGS"
-        : TABS[selectedTab];
-
-    context.drawText(
-        textRenderer,
-        heading,
-        left + 170,
-        top + 15,
-        0xFFFFFFFF,
-        false
-    );
-
-    context.drawText(
-        textRenderer,
-        status,
-        left + 170,
-        top + 285,
-        0xFFFFD76A,
-        false
-    );
-
-    if (jumpCircleSettingsOpen) {
-        context.drawText(
-            textRenderer,
-            "Kolor, rozmiar, animacja i logo",
-            left + 170,
-            top + 230,
-            0xFFDDDDDD,
-            false
-        );
-    }
-}
+    @Override
+    public void render(
+        DrawContext context,
+        int mouseX,
+        int mouseY,
+        float delta
+    ) {
         renderBackground(context, mouseX, mouseY, delta);
 
         int left = Math.max(8, (width - PANEL_WIDTH) / 2);
@@ -499,10 +469,15 @@ public void render(
             0xFF30304A
         );
 
+        super.render(context, mouseX, mouseY, delta);
+
         context.drawText(
-            textRenderer, "ANGEL CLIENT",
-            left + 12, top + 12,
-            0xFFFFD76A, false
+            textRenderer,
+            "ANGEL CLIENT",
+            left + 12,
+            top + 12,
+            0xFFFFD76A,
+            false
         );
 
         String heading = jumpCircleSettingsOpen
@@ -510,27 +485,33 @@ public void render(
             : TABS[selectedTab];
 
         context.drawText(
-            textRenderer, heading,
-            left + 170, top + 15,
-            0xFFFFFFFF, false
+            textRenderer,
+            heading,
+            left + 170,
+            top + 15,
+            0xFFFFFFFF,
+            false
         );
 
         context.drawText(
-            textRenderer, status,
-            left + 170, top + 285,
-            0xFFFFD76A, false
+            textRenderer,
+            status,
+            left + 170,
+            top + 285,
+            0xFFFFD76A,
+            false
         );
 
         if (jumpCircleSettingsOpen) {
             context.drawText(
                 textRenderer,
                 "Kolor, rozmiar, animacja i logo",
-                left + 170, top + 230,
-                0xFFDDDDDD, false
+                left + 170,
+                top + 230,
+                0xFFDDDDDD,
+                false
             );
         }
-
-        super.render(context, mouseX, mouseY, delta);
     }
 
     @Override
