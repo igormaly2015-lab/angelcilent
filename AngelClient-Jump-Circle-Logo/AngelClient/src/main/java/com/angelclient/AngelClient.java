@@ -9,12 +9,10 @@ import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 public final class AngelClient implements ClientModInitializer {
-
     private static KeyBinding openMenu;
 
     @Override
     public void onInitializeClient() {
-
         KeyBinding.Category category =
             KeyBinding.Category.create(
                 Identifier.of("angelclient", "main")
